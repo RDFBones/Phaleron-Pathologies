@@ -1,103 +1,159 @@
 #! /bin/bash
+cleanup=0
+update=0
+build=0
+function usage {
+    echo " "
+    echo "usage: $0 [-b][-c][-u]"
+    echo " "
+    echo "    -b          build owl file"
+    echo "    -c          cleanup temp files"
+    echo "    -u          initalize/update submodule"
+    echo "    -h -?       print this help"
+    echo " "
+    
+    exit
+}
 
-## CORE ONTOLOGY
+while getopts "bcuh?" opt; do
+    case "$opt" in
+        c)
+            cleanup=1
 
-## Merge core ontology
+            ;;
+	u)  update=1
+	    ;;
+	b) build=1
+	   ;;       
+	?)
+	usage
+	;;
+	h)
+	    usage
+	    ;;
+    esac
+done
+if [ -z "$1" ]; then
+    usage
+fi
 
-robot merge --input ~/gitprojects/RDFBones-O/RDFBones-main.owl \
-      --input ~/gitprojects/RDFBones-O/FMA-RDFBonesSubset.owl \
-      --input ~/gitprojects/RDFBones-O/RDFBones-ROIs-EntireBoneOrgan.owl \
-      --input ~/gitprojects/RDFBones-O/OBI-RDFBonesSubset.owl \
-      --input ~/gitprojects/RDFBones-O/CIDOC-CRM-RDFBonesSubset.owl \
-      --input ~/gitprojects/RDFBones-O/SIO-RDFBonesSubset.owl \
-      --input ~/gitprojects/RDFBones-O/VIVO-RDFBonesSubset.owl \
-      --output results/Merged_CoreOntology.owl
+## SUBMODULES
+
+## check if submodule is initialized
+
+gitchk=$(git submodule foreach 'echo $sm_path `git rev-parse HEAD`')
+if [ -z "$gitchk" ];then
+    update=1
+    echo "Initializing git submodule"
+fi
+
+## Initialize and update git submodule
+if  [ $update -eq 1 ]; then
+    git submodule init
+    git submodule update
+fi
+
+## DEPENDENCIES
+
+## Change to StandardsPatho directory
+
+cd dependencies/StandardsPatho/
+
+./Script_StandardsPatho-Robot.sh -b -u
+
+cd ../../
+
+## BUILD ONTOLOGY
+
+if [ $build -eq 1 ]; then
+    
+## CATEGORY LABELS
 
 ## Merge standards palaeopathology category labels into core ontology
 
-robot merge --input results/Merged_CoreOntology.owl \
-      --input ../Standards_-_Paleopathology/results/StandardsPatho_CategoryLabels.owl \
+robot merge --input dependencies/StandardsPatho/results/Merged_CoreOntology.owl \
+      --input dependencies/StandardsPatho/results/StandardsPatho_CategoryLabels.owl \
       --output results/Merged_StandardsCategoryLabels.owl
 
-## CATEGORY LABELS
+## Create category labels
 
 robot template --template Template_PhaleronPatho-CategoryLabels.tsv \
       --input results/Merged_StandardsCategoryLabels.owl \
-  --prefix "rdfbones: http://w3id.org/rdfbones/core#" \
-  --prefix "obo: http://purl.obolibrary.org/obo/" \
-  --prefix "standards-patho: http://w3id.org/rdfbones/ext/standards-patho/" \
-  --prefix "phaleron-patho: http://w3id.org/rdfbones/ext/phaleron-patho/" \
-  --ontology-iri "http://w3id.org/rdfbones/ext/phaleron-patho/phaleron-patho.owl" \
-  --output results/phaleron-patho_CategoryLabels.owl
+      --prefix "rdfbones: http://w3id.org/rdfbones/core#" \
+      --prefix "obo: http://purl.obolibrary.org/obo/" \
+      --prefix "standards-patho: http://w3id.org/rdfbones/ext/standards-patho/" \
+      --prefix "phaleron-patho: http://w3id.org/rdfbones/ext/phaleron-patho/" \
+      --ontology-iri "http://w3id.org/rdfbones/ext/phaleron-patho/phaleron-patho.owl" \
+      --output results/phaleron-patho_CategoryLabels.owl
 
 ## VALUE SPECIFICATIONS
 
-# Merge category labels and standards palaeopathology value specifications into core ontology
+## Merge category labels and standards palaeopathology value specifications into core ontology
 
 robot merge --input results/Merged_StandardsCategoryLabels.owl \
       --input results/phaleron-patho_CategoryLabels.owl \
-      --input ../Standards_-_Paleopathology/results/StandardsPatho_ValueSpecifications.owl \
+      --input dependencies/StandardsPatho/results/StandardsPatho_ValueSpecifications.owl \
       --output results/Merged_CategoryLabelsStandardsValueSpecifications.owl
 
-# Create value specifications
+## Create value specifications
 
 robot template --template Template_PhaleronPatho-ValueSpecifications.tsv \
-  --input results/Merged_CategoryLabelsStandardsValueSpecifications.owl \
-  --prefix "rdfbones: http://w3id.org/rdfbones/core#" \
-  --prefix "obo: http://purl.obolibrary.org/obo/" \
-  --prefix "standards-patho: http://w3id.org/rdfbones/ext/standards-patho/" \
-  --prefix "phaleron-patho: http://w3id.org/rdfbones/ext/phaleron-patho/" \
-  --prefix "vivo: http://vivoweb.org/ontology/core#" \
-  --ontology-iri "http://w3id.org/rdfbones/ext/phaleron-patho/phaleron-patho.owl" \
-  --output results/phaleron-patho_ValueSpecifications.owl
+      --input results/Merged_CategoryLabelsStandardsValueSpecifications.owl \
+      --prefix "rdfbones: http://w3id.org/rdfbones/core#" \
+      --prefix "obo: http://purl.obolibrary.org/obo/" \
+      --prefix "standards-patho: http://w3id.org/rdfbones/ext/standards-patho/" \
+      --prefix "phaleron-patho: http://w3id.org/rdfbones/ext/phaleron-patho/" \
+      --prefix "vivo: http://vivoweb.org/ontology/core#" \
+      --ontology-iri "http://w3id.org/rdfbones/ext/phaleron-patho/phaleron-patho.owl" \
+      --output results/phaleron-patho_ValueSpecifications.owl
 
 ## MEASUREMENT DATA
 
-# Merge value specifications into core ontology
+## Merge value specifications into core ontology
 
 robot merge --input results/Merged_CategoryLabelsStandardsValueSpecifications.owl \
       --input results/phaleron-patho_ValueSpecifications.owl \
       --output results/Merged_ValueSpecifications.owl
 
-# Create measurement data items
+## Create measurement data items
 
 robot template --template Template_PhaleronPatho-MeasurementData.tsv \
-  --input results/Merged_ValueSpecifications.owl \
-  --prefix "rdfbones: http://w3id.org/rdfbones/core#" \
-  --prefix "obo: http://purl.obolibrary.org/obo/" \
-  --prefix "standards-patho: http://w3id.org/rdfbones/ext/standards-patho/" \
-  --prefix "phaleron-patho: http://w3id.org/rdfbones/ext/phaleron-patho/" \
-  --ontology-iri "http://w3id.org/rdfbones/ext/phaleron-patho/phaleron-patho.owl" \
-  --output results/phaleron-patho_MeasurementData.owl
+      --input results/Merged_ValueSpecifications.owl \
+      --prefix "rdfbones: http://w3id.org/rdfbones/core#" \
+      --prefix "obo: http://purl.obolibrary.org/obo/" \
+      --prefix "standards-patho: http://w3id.org/rdfbones/ext/standards-patho/" \
+      --prefix "phaleron-patho: http://w3id.org/rdfbones/ext/phaleron-patho/" \
+      --ontology-iri "http://w3id.org/rdfbones/ext/phaleron-patho/phaleron-patho.owl" \
+      --output results/phaleron-patho_MeasurementData.owl
 
 ## DATASETS
 
-# Merge measurement data into core ontology
+## Merge measurement data into core ontology
 
 robot merge --input results/Merged_ValueSpecifications.owl \
       --input results/phaleron-patho_MeasurementData.owl \
       --output results/Merged_MeasurementData.owl
 
-# Create datasets
+## Create datasets
 
 robot template --template Template_PhaleronPatho-Datasets.tsv \
-  --input results/Merged_MeasurementData.owl \
-  --prefix "rdfbones: http://w3id.org/rdfbones/core#" \
-  --prefix "obo: http://purl.obolibrary.org/obo/" \
-  --prefix "standards-patho: http://w3id.org/rdfbones/ext/standards-patho/" \
-  --prefix "phaleron-patho: http://w3id.org/rdfbones/ext/phaleron-patho/" \
-  --ontology-iri "http://w3id.org/rdfbones/ext/phaleron-pahto/phaleron-patho.owl" \
-  --output results/phaleron-patho_Datasets.owl
+      --input results/Merged_MeasurementData.owl \
+      --prefix "rdfbones: http://w3id.org/rdfbones/core#" \
+      --prefix "obo: http://purl.obolibrary.org/obo/" \
+      --prefix "standards-patho: http://w3id.org/rdfbones/ext/standards-patho/" \
+      --prefix "phaleron-patho: http://w3id.org/rdfbones/ext/phaleron-patho/" \
+      --ontology-iri "http://w3id.org/rdfbones/ext/phaleron-pahto/phaleron-patho.owl" \
+      --output results/phaleron-patho_Datasets.owl
 
 ## PROCESSES and ROLES
 
-# Merge datasets into core ontology
+## Merge datasets into core ontology
 
 robot merge --input results/Merged_MeasurementData.owl \
       --input results/phaleron-patho_Datasets.owl \
       --output results/Merged_Datasets.owl
 
-# Create processes and roles
+## Create processes and roles
 
 robot template --template Template_PhaleronPatho-ProcessesRoles.tsv \
       --input results/Merged_Datasets.owl \
@@ -112,18 +168,18 @@ robot template --template Template_PhaleronPatho-ProcessesRoles.tsv \
 ## EXTENSION
 
 robot merge --input results/phaleron-patho_CategoryLabels.owl \
-      --input ../Standards_-_Paleopathology/results/StandardsPatho_CategoryLabels.owl \
-      --input ../Standards_-_Paleopathology/results/StandardsPatho_ValueSpecifications.owl \
       --input results/phaleron-patho_ValueSpecifications.owl \
       --input results/phaleron-patho_MeasurementData.owl \
       --input results/phaleron-patho_Datasets.owl \
       --input results/phaleron-patho_ProcessesRoles.owl \
       --output results/phaleron-patho.owl
 
-## CORE ONTOLOGY and EXTENSION
+fi
 
-robot merge --input results/Merged_CoreOntology.owl \
-      --input results/phaleron-patho.owl \
-      --output results/RDFBones_phaleron-patho.owl
+## CLEANUP
 
-read -p 'Hit ENTER to exit'
+rm -r dependencies/StandardsPatho/results
+
+if  [ $cleanup -eq 1 ]; then
+	rm results/Merged_StandardsCategoryLabels.owl results/phaleron-patho_CategoryLabels.owl results/Merged_CategoryLabelsStandardsValueSpecifications.owl results/phaleron-patho_ValueSpecifications.owl results/Merged_ValueSpecifications.owl results/phaleron-patho_MeasurementData.owl results/Merged_MeasurementData.owl results/phaleron-patho_Datasets.owl results/Merged_Datasets.owl results/phaleron-patho_ProcessesRoles.owl
+fi
