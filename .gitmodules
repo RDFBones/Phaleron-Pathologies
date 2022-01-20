@@ -1,4 +1,4 @@
-[submodule "dependencies/RDFBones"]
-	path = dependencies/RDFBones
-	url = https://github.com/RDFBones/RDFBones-O
-	branch = si
+[submodule "dependencies/StandardsPatho"]
+	path = dependencies/StandardsPatho
+	url = https://github.com/RDFBones/Standards-Pathologies
+	branch = robot
