@@ -132,6 +132,7 @@ robot template --template Template_PhaleronPatho-MeasurementData.tsv \
 
 robot merge --input results/Merged_ValueSpecifications.owl \
       --input results/phaleron-patho_MeasurementData.owl \
+      --input dependencies/StandardsPatho/results/StandardsPatho_MeasurementData.owl \
       --output results/Merged_MeasurementData.owl
 
 ## Create datasets
