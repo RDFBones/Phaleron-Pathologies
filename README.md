@@ -1,6 +1,6 @@
 # Phaleron-Pathologies
 
-An [RDFBones](https://github.com/RDFBones/RDFBones-O) ontology extension modelling the acquisition routine for pathological data developed by the Phaleron Bioarchaeological Project. Besides the RDFBones core ontology, it also depends on the [standards-patho](https://github.com/RDFBones/Standards-Pathologies) ontology extension.
+An [RDFBones](https://rdfbones.github.io/) ontology extension modelling the acquisition routine for pathological data developed by the Phaleron Bioarchaeological Project. Besides the [RDFBones core ontology](https://github.com/RDFBones/RDFBones-O), it also depends on the [standards-patho](https://github.com/RDFBones/Standards-Pathologies) ontology extension.
 
 ## How to build the ontology file
 
