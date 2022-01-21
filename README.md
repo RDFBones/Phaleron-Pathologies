@@ -1,5 +1,6 @@
 # Phaleron-Pathologies
-An RDFBones ontology extension modelling the acquisition routine for pathological data developed by the Phaleron Bioarchaeological Project.
+
+An [RDFBones](https://github.com/RDFBones/RDFBones-O) ontology extension modelling the acquisition routine for pathological data developed by the Phaleron Bioarchaeological Project. Besides the RDFBones core ontology, it also depends on the [standards-patho](https://github.com/RDFBones/Standards-Pathologies) ontology extension.
 
 ## How to build the ontology file
 
@@ -9,10 +10,11 @@ Specifications of ontology elements are in a series of template files in the tab
 
 ```./Script_StandardsPatho-Robot.sh -b -c -u```
 
-The output will appear in a newly created directory 'results' and consist of the single file 'standards-patho.owl'.
+The output will appear in a newly created directory 'results' and consist of the single file 'phaleron-patho.owl'.
 
 The scipt generates a series of intermediate files during the compilation process. To obtain these in the 'results' folder, drop the '-c' ('clean-up') option when executing the script.
 
-Compilation relies on [version 0.2 of the RDFBones core ontology](https://github.com/RDFBones/RDFBones-O/tree/v0.2) which is included in a submodule (./dependencies/RDFBones/) within this repository. The script automatically updates the submodule as long as the '-u' (update) option is set.
+Compilation relies on the standards-patho ontology extension which is included in a submodule (./dependencies/StandardsPatho/) within this repository. The script automatically updates the submodule as long as the '-u' (update) option is set. Through the submodule, [version 0.2 of the RDFBones core ontology](https://github.com/RDFBones/RDFBones-O/tree/v0.2) is also made available.
 
 The '-b' (build) option causes the script to compile the output file. Use the script without this option to update the submodule or clean up a previously compiled output.
+
