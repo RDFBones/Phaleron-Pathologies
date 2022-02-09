@@ -8,7 +8,7 @@ We are using the [ROBOT](https://robot.obolibrary.org/) tool for developing the 
 
 Specifications of ontology elements are in a series of template files in the tab-separated value format (.tsv). From these, the web ontology language (.owl) file is compiled using the script [Script_PhaleronPatho-Robot.sh](../robot/Script_PhaleronPatho-Robot.sh). To execute, navigate to the directory containing the file and run the scipt as
 
-```./Script_StandardsPatho-Robot.sh -b -c -u```
+```./Script_PhaleronPatho-Robot.sh -b -c -u```
 
 The output will appear in a newly created directory 'results' and consist of the single file 'phaleron-patho.owl'.
 
