@@ -175,6 +175,25 @@ robot merge --input results/phaleron-patho_CategoryLabels.owl \
       --input results/phaleron-patho_ProcessesRoles.owl \
       --output results/phaleron-patho.owl
 
+robot annotate --input results/phaleron-patho.owl \
+      --remove-annotations \
+      --ontology-iri "http://w3id.org/rdfbones/ext/phaleron-patho/latest/phaleron-patho.owl" \
+      --version-iri "http://w3id.org/rdfbones/ext/phaleron-patho/v0-1/phaleron-patho.owl" \
+      --annotation owl:versionInfo "0.1" \
+      --language-annotation rdfs:label "Pathological investigations for the Phaleron Bioarchaeological Project" en \
+      --language-annotation rdfs:comment "This ontology extension only works in combination with the RDFBones core ontology." en \
+      --annotation dc:creator "Felix Engel" \
+      --annotation dc:contributor "Stefan Schlager" \
+      --annotation dc:contributor "Jane E. Buikstra" \
+      --annotation dc:contributor "Eleanna Prevedorou" \
+      --annotation dc:contributor "Leigh Hayes" \
+      --annotation dc:contributor "Jessica Hotaling" \
+      --annotation dc:contributor "Hannah Liedl" \
+      --annotation dc:contributor "Jessica Rothwell" \
+      --language-annotation dc:description "This RDFBones ontology extension implements the Paleopathology Scoring Key and the Paleopathology Data Acquisition Template authored by the Phaleron Bioarchaeological Project." en \
+      --language-annotation dc:title "Pathological investigations for the Phaleron Bioarchaeological Project" en \
+      --output results/phaleron-patho.owl
+
 fi
 
 ## CLEANUP
