@@ -194,6 +194,12 @@ robot annotate --input results/phaleron-patho.owl \
       --language-annotation dc:title "Pathological investigations for the Phaleron Bioarchaeological Project" en \
       --output results/phaleron-patho.owl
 
+## CONSISTENCY TEST
+
+robot reason --reasoner ELK \
+      --input results/phaleron-patho.owl \
+      -D results/debug.owl
+
 fi
 
 ## CLEANUP
