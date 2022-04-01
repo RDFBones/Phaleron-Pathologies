@@ -121,6 +121,7 @@ robot template --template Template_PhaleronPatho-MeasurementData.tsv \
       --input results/Merged_ValueSpecifications.owl \
       --prefix "rdfbones: http://w3id.org/rdfbones/core#" \
       --prefix "obo: http://purl.obolibrary.org/obo/" \
+      --prefix "standards-si: http://w3id.org/rdfbones/ext/standards-si/" \
       --prefix "standards-patho: http://w3id.org/rdfbones/ext/standards-patho/" \
       --prefix "phaleron-patho: http://w3id.org/rdfbones/ext/phaleron-patho/" \
       --ontology-iri "http://w3id.org/rdfbones/ext/phaleron-patho/phaleron-patho.owl" \
