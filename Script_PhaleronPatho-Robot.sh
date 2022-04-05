@@ -124,6 +124,7 @@ robot template --template Template_PhaleronPatho-MeasurementData.tsv \
       --prefix "standards-si: http://w3id.org/rdfbones/ext/standards-si/" \
       --prefix "standards-patho: http://w3id.org/rdfbones/ext/standards-patho/" \
       --prefix "phaleron-patho: http://w3id.org/rdfbones/ext/phaleron-patho/" \
+      --prefix "vivo: http://vivoweb.org/ontology/core#" \
       --ontology-iri "http://w3id.org/rdfbones/ext/phaleron-patho/phaleron-patho.owl" \
       --output results/phaleron-patho_MeasurementData.owl
 
