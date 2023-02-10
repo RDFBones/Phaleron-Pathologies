@@ -69,9 +69,15 @@ if [ $build -eq 1 ]; then
     
 ## CATEGORY LABELS
 
-## Merge standards palaeopathology category labels into core ontology
+## Merge standards skeletal inventories into core ontology
 
 robot merge --input dependencies/StandardsPatho/results/Merged_CoreOntology.owl \
+      --input dependencies/Standards-SkeletalInventories/standards-si.owl \
+      --output results/Merged_StandardsSkeletalInventories.owl
+
+## Merge standards pathologies into dependencies
+
+robot merge --input results/Merged_StandardsSkeletalInventories.owl \
       --input dependencies/StandardsPatho/results/StandardsPatho_CategoryLabels.owl \
       --output results/Merged_StandardsCategoryLabels.owl
 
@@ -144,6 +150,7 @@ robot template --template Template_PhaleronPatho-Datasets.tsv \
       --prefix "rdfbones: http://w3id.org/rdfbones/core#" \
       --prefix "obo: http://purl.obolibrary.org/obo/" \
       --prefix "standards-patho: http://w3id.org/rdfbones/ext/standards-patho/" \
+      --prefix "standards-si: http://w3id.org/rdfbones/ext/standards-si/" \
       --prefix "phaleron-patho: http://w3id.org/rdfbones/ext/phaleron-patho/" \
       --ontology-iri "http://w3id.org/rdfbones/ext/phaleron-pahto/phaleron-patho.owl" \
       --output results/phaleron-patho_Datasets.owl
