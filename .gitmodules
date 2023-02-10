@@ -2,3 +2,6 @@
 	path = dependencies/StandardsPatho
 	url = https://github.com/RDFBones/Standards-Pathologies
 	branch = robot
+[submodule "dependencies/Standards-SkeletalInventories"]
+	path = dependencies/Standards-SkeletalInventories
+	url = https://github.com/RDFBones/Standards-SkeletalInventories.git
