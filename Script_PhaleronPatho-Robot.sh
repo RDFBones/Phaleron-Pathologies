@@ -158,6 +158,7 @@ robot template --template Template_PhaleronPatho-Datasets.tsv \
       --prefix "standards-patho: http://w3id.org/rdfbones/ext/standards-patho/" \
       --prefix "standards-si: http://w3id.org/rdfbones/ext/standards-si/" \
       --prefix "phaleron-patho: http://w3id.org/rdfbones/ext/phaleron-patho/" \
+      --prefix "phaleron-si: http://w3id.org/rdfbones/ext/phaleron-si/" \
       --ontology-iri "http://w3id.org/rdfbones/ext/phaleron-pahto/phaleron-patho.owl" \
       --output results/phaleron-patho_Datasets.owl
 
