@@ -55,7 +55,7 @@ fi
 
 ## DEPENDENCIES
 
-## Change to StandardsPatho directory
+## Build Standards-Pathologies
 
 cd dependencies/StandardsPatho/
 
@@ -75,9 +75,15 @@ robot merge --input dependencies/StandardsPatho/results/Merged_CoreOntology.owl 
       --input dependencies/Standards-SkeletalInventories/standards-si.owl \
       --output results/Merged_StandardsSkeletalInventories.owl
 
-## Merge standards pathologies into dependencies
+## Merge Phaleron skeletal inventories into dependencies
 
 robot merge --input results/Merged_StandardsSkeletalInventories.owl \
+      --input dependencies/Phaleron-SkeletalInventory/phaleron-si.owl \
+      --output results/Merged_PhaleronSkeletalInventory.owl
+
+## Merge standards pathologies into dependencies
+
+robot merge --input results/Merged_PhaleronSkeletalInventory.owl \
       --input dependencies/StandardsPatho/results/StandardsPatho_CategoryLabels.owl \
       --output results/Merged_StandardsCategoryLabels.owl
 
